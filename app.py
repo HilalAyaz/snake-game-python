@@ -1,10 +1,8 @@
 import pygame
 import random
 
-# Initialize Pygame
 pygame.init()
 
-# Constants
 WIDTH, HEIGHT = 600, 600
 GRID_SIZE = 20
 FPS = 30
@@ -16,7 +14,6 @@ FOOD_COLOR = (255, 0, 0)
 BIG_FOOD_COLOR = (255, 255, 0)
 BIG_FOOD_SIZE = GRID_SIZE * 2
 
-# Snake class
 class Snake:
     def __init__(self):
         self.body = [(100, 100)]
@@ -34,7 +31,7 @@ class Snake:
         dx, dy = self.direction
         new_head = ((x + dx * GRID_SIZE) % WIDTH, (y + dy * GRID_SIZE) % HEIGHT)
         if new_head in self.body[1:]:
-            return False  # Game over: Snake collided with itself
+            return False  
         self.body.insert(0, new_head)
         if new_head == food.position:
             food.regenerate()
@@ -63,7 +60,6 @@ class Snake:
         for segment in self.body:
             pygame.draw.rect(surface, SNAKE_COLOR, (segment[0], segment[1], GRID_SIZE, GRID_SIZE), border_radius=5)
 
-# Food class
 class Food:
     def __init__(self):
         self.position = (random.randrange(0, WIDTH, GRID_SIZE), random.randrange(0, HEIGHT, GRID_SIZE))
@@ -77,9 +73,8 @@ class Food:
 
     def regenerate(self):
         self.position = (random.randrange(0, WIDTH, GRID_SIZE), random.randrange(0, HEIGHT, GRID_SIZE))
-        self.is_big = (random.random() < 0.1)  # 10% chance of big food
+        self.is_big = (random.random() < 0.1)  
 
-# Main function
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Snake Game")
@@ -88,7 +83,6 @@ def main():
     snake = Snake()
     food = Food()
 
-    # Load high score
     high_score = load_high_score()
 
     game_over = False
@@ -124,16 +118,13 @@ def main():
             snake.draw(screen)
             food.draw(screen)
 
-            # Display score
             font = pygame.font.Font(None, 36)
             score_text = font.render(f"Score: {snake.score}", True, BLACK)
             screen.blit(score_text, (10, 10))
 
-            # Display high score
             high_score_text = font.render(f"High Score: {high_score}", True, BLACK)
             screen.blit(high_score_text, (10, 40))
         else:
-            # Game over message
             font = pygame.font.Font(None, 32)
             text = font.render("Game Over! Press ENTER to play again.", True, BLACK)
             text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
